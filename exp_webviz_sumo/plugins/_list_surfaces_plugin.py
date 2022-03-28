@@ -14,6 +14,7 @@ class ListSurfacesPlugin(WebvizPluginABC):
         app: Dash,
     ):
         super().__init__()
+
         self.set_callbacks(app)
 
     @property
