@@ -29,8 +29,6 @@ RUN chmod 600 ~/.ssh/id_rsa
 # RUN echo "${SUMO_VIZ_PROTO_PRIVATE_KEY}" | base64 --decode > ~/.ssh/id_rsa_sumo_viz_proto
 # RUN chmod 600 ~/.ssh/id_rsa_sumo_viz_proto
 
-# RUN ls -al ~/.ssh/
-
 RUN touch ~/.ssh/known_hosts
 RUN ssh-keyscan github.com >> ~/.ssh/known_hosts
 
