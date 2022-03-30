@@ -6,6 +6,8 @@ from fmu.sumo.explorer._case_collection import CaseCollection  # type: ignore
 from webviz_config import WebvizPluginABC
 import webviz_core_components as wcc
 
+from sumo.wrapper import SumoClient
+from flask import session
 
 
 class ListSurfacesPlugin(WebvizPluginABC):
@@ -15,7 +17,15 @@ class ListSurfacesPlugin(WebvizPluginABC):
     ):
         super().__init__()
 
+        self.use_oauth2 = True
+        self.access_token = None
+        self.sumo_client = None
+
         self.set_callbacks(app)
+
+    @property
+    def oauth2(self):
+        return self.use_oauth2
 
     @property
     def layout(self) -> html.Div:
@@ -24,6 +34,7 @@ class ListSurfacesPlugin(WebvizPluginABC):
                 style={"flex": 1, "height": "90vh"},
                 children=[
                     html.Button("Connect", id=self.uuid("connect_button")),
+                    html.Button("Surprise me!", id=self.uuid("test_button")),
                 ],
             ),
             wcc.Frame(
@@ -31,6 +42,9 @@ class ListSurfacesPlugin(WebvizPluginABC):
                 children=[
                     html.Div(
                         id=self.uuid("info_div"),
+                    ),
+                    html.Div(
+                        id=self.uuid("test_div"),
                     ),
                 ],
             ),
@@ -86,4 +100,37 @@ class ListSurfacesPlugin(WebvizPluginABC):
                     html.P(str(exc)),
                 ]
 
+            return children
+
+        @app.callback(
+            Output(self.uuid("test_div"), "children"),
+            Input(self.uuid("test_button"), "n_clicks"),
+            prevent_initial_call=True,
+        )
+        def _test_button_clicked(_n_clicks: int):
+            self.access_token = session.get("access_token")
+            self.sumo_client = SumoClient("dev", access_token=self.access_token)
+            userdata = self.sumo_client.get("/userdata")
+
+            self.explorer = Explorer(env="dev", access_token=self.access_token)
+            fields = self.explorer.get_fields()
+
+            children = []
+            children.append(html.H6("About you"))
+            children.append(html.Div(userdata["profile"]["displayName"]))
+            children.append(html.Div(userdata["profile"]["jobTitle"]))
+            children.append(html.Div(userdata["profile"]["mail"]))
+            children.append(html.Div(userdata["profile"]["mobilePhone"]))
+            children.append(html.Hr())
+            children.append(html.H6("Cases by fields"))
+            for key in fields:
+                children.append(html.B(key))
+                cases = self.explorer.get_cases(fields=[key])
+                for case_index in range(len(cases)):
+                    print(str(cases[case_index].case_name))
+                    children.append(html.Div(cases[case_index].case_name))
+                children.append(html.Br())
+
+            print(userdata)
+            print(fields)
             return children
