@@ -40,6 +40,7 @@ RUN python3 -m pip install webviz-config-equinor
 RUN python3 -m pip install gunicorn
 # RUN python3 -m pip install libecl
 # RUN python3 -m pip install opm
+RUN python3 -m pip install git+https://github.com/equinor/fmu-sumo.git@explorer
 
 RUN export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa" && \
     echo $GIT_SSH_COMMAND && \
