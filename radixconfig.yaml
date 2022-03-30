@@ -1,0 +1,33 @@
+apiVersion: radix.equinor.com/v1
+kind: RadixApplication
+metadata:
+  name: exp-webviz-sumo
+spec:
+  build:
+    secrets:
+      - EXP_WEBVIZ_SUMO_PRIVATE_KEY
+  environments:
+    - name: test
+      build:
+        from: oauth2
+  components:
+    - name: main
+      src: "."
+      ports:
+        - name: http
+          port: 5000
+      publicPort: http
+      environmentConfig:
+        - environment: test
+          resources:
+            requests:
+              memory: "1G"
+              cpu: "500m"
+            limits:
+              memory: "2G"
+              cpu: "750m"
+      secrets:
+        - WEBVIZ_TENANT_ID
+        - WEBVIZ_CLIENT_ID
+        - WEBVIZ_CLIENT_SECRET
+        - WEBVIZ_SCOPE
