@@ -55,7 +55,7 @@ RUN export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa" && \
 #     echo $GIT_SSH_COMMAND && \
 #     python3 -m pip install git+ssh://git@github.com/equinor/sumo-viz-proto.git@aggregation-service
 
-RUN webviz build config/simple_config.yaml --theme equinor --portable app
+RUN webviz build configs/simple_config.yaml --theme equinor --portable app
 
 USER 1001
 
