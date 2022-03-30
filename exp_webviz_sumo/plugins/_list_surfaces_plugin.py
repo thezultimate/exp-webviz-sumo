@@ -8,6 +8,7 @@ import webviz_core_components as wcc
 
 from sumo.wrapper import SumoClient
 from flask import session
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 
 class ListSurfacesPlugin(WebvizPluginABC):
@@ -20,6 +21,9 @@ class ListSurfacesPlugin(WebvizPluginABC):
         self.use_oauth2 = True
         self.access_token = None
         self.sumo_client = None
+        self.explorer = None
+
+        app.server.wsgi_app = ProxyFix(app.server.wsgi_app, x_proto=1, x_host=1)
 
         self.set_callbacks(app)
 
