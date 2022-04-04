@@ -45,7 +45,7 @@ RUN python3 -m pip install git+ssh://git@github.com/equinor/fmu-sumo.git@explore
 
 RUN export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa" && \
     echo $GIT_SSH_COMMAND && \
-    python3 -m pip install git+ssh://git@github.com/thezultimate/exp-webviz-sumo.git@oauth2
+    python3 -m pip install git+ssh://git@github.com/thezultimate/exp-webviz-sumo.git@public-client
 
 # RUN export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa" && \
 #     echo $GIT_SSH_COMMAND && \
