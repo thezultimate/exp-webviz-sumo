@@ -33,7 +33,8 @@ RUN touch ~/.ssh/known_hosts
 RUN ssh-keyscan github.com >> ~/.ssh/known_hosts
 
 RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install webviz-config
+# RUN python3 -m pip install webviz-config
+RUN python3 -m pip install git+ssh://git@github.com/thezultimate/webviz-config.git@public-client-web
 RUN python3 -m pip install webviz-config-equinor
 # RUN python3 -m pip install webviz-subsurface
 # RUN python3 -m pip install xtgeo
