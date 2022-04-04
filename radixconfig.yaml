@@ -10,6 +10,9 @@ spec:
     - name: test
       build:
         from: oauth2
+    - name: public
+      build:
+        from: public-client
   components:
     - name: main
       src: "."
