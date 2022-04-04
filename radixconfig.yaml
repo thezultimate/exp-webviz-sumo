@@ -29,6 +29,14 @@ spec:
             limits:
               memory: "2G"
               cpu: "750m"
+        - environment: public
+          resources:
+            requests:
+              memory: "1G"
+              cpu: "500m"
+            limits:
+              memory: "2G"
+              cpu: "750m"
       secrets:
         - WEBVIZ_TENANT_ID
         - WEBVIZ_CLIENT_ID
